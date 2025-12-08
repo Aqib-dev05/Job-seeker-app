@@ -1,46 +1,20 @@
-// Real API function
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+
 export const fetchJobsAndInternships = async (filters = {}) => {
-  try {
-    // Replace this URL with your actual API endpoint
-    const response = await fetch("https://your-api-endpoint.com/jobs");
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const allOpportunities = await response.json();
-
-    // Apply filters (keeping the same filtering logic)
-    let filtered = [...allOpportunities];
-    
-    if (filters.search) {
-      const searchLower = filters.search.toLowerCase();
-      filtered = filtered.filter(
-        (job) =>
-          job.title.toLowerCase().includes(searchLower) ||
-          job.company.toLowerCase().includes(searchLower) ||
-          job.description.toLowerCase().includes(searchLower)
-      );
-    }
-
-    if (filters.location && filters.location !== "all") {
-      filtered = filtered.filter((job) =>
-        job.location.toLowerCase().includes(filters.location.toLowerCase())
-      );
-    }
-
-    if (filters.type && filters.type !== "all") {
-      filtered = filtered.filter((job) => job.type === filters.type);
-    }
-
-    if (filters.field && filters.field !== "all") {
-      filtered = filtered.filter((job) => job.field === filters.field);
-    }
-
-    return filtered;
-  } catch (error) {
-    console.error("Error fetching jobs:", error);
-    throw error;
+  const params = new URLSearchParams();
+  if (filters.search) params.append("q", filters.search);
+  if (filters.location && filters.location !== "all") {
+    params.append("location", filters.location);
   }
+  if (filters.type && filters.type !== "all") params.append("type", filters.type);
+  if (filters.field && filters.field !== "all") params.append("field", filters.field);
+
+  const url = `${API_BASE}/jobs?${params.toString()}`;
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  return response.json();
 };
 
 /* location: "San Francisco, CA",

@@ -92,7 +92,7 @@ const JobsInternshipsModule = () => {
                 {!loading && !error && opportunities.length > 0 && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {opportunities.map((job) => (
-                            <JobCard key={job.id} job={job} />
+                            <JobCard key={job._id || job.id} job={job} />
                         ))}
                     </div>
                 )}

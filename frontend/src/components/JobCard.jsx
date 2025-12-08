@@ -3,6 +3,7 @@ import { MapPin, Briefcase, Calendar, ExternalLink } from 'lucide-react';
 
 const JobCard = ({ job }) => {
     const formatDeadline = (deadline) => {
+        if (!deadline) return '—';
         const date = new Date(deadline);
         const now = new Date();
         const diffTime = date - now;
@@ -31,8 +32,8 @@ const JobCard = ({ job }) => {
                 <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center space-x-3">
                         <img
-                            src={job.logo}
-                            alt={`${job.company} logo`}
+                            src={job.logo || 'https://placehold.co/96x96?text=Job'}
+                            alt={`${job.company || 'Company'} logo`}
                             className="w-12 h-12 rounded-lg object-cover bg-gray-100"
                         />
                         <div>
@@ -41,7 +42,7 @@ const JobCard = ({ job }) => {
                         </div>
                     </div>
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${getTypeColor(job.type)}`}>
-                        {job.type}
+                        {job.type || 'Role'}
                     </span>
                 </div>
 

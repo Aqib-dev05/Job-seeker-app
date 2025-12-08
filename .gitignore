@@ -6,6 +6,101 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+# Dependency directories
+node_modules/
+bower_components/
+jspm_packages/
+
+# Build output
+dist/
+build/
+tmp/
+temp/
+out/
+coverage/
+.nyc_output/
+lib-cov/
+
+# dotenv environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Database & local data
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.local.db
+*.local.sqlite
+database.sqlite
+data/
+dump.rdb
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE and editor folders
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Test output
+test-output/
+test-results/
+coverage/
+.nyc_output/
+
+# Misc
+*.tgz
+*.bak
+*.backup
+*.orig
+*.rej
+
+# TypeScript
+*.tsbuildinfo
+
+# PM2 process manager logs & pids
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Docker
+docker-compose.override.yml
+.docker/
+
+# Swagger
+swagger-output.json
+
+# Firebase
+.firebase/
+
+# Mac specific
+.AppleDouble
+
+# Backend frameworks (Express, NestJS, etc) specific
+uploads/
+uploads/*
+storage/
+public/uploads/
+logs/
+*.pem
+
 
 node_modules
 dist
