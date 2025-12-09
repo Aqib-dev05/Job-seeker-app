@@ -4,6 +4,7 @@ import cors from "cors";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import { jobSchema } from "./jobSchema.js";
+import process from 'process';
 
 dotenv.config();
 
@@ -12,17 +13,28 @@ const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/jobseek";
 
 // Connect DB and start server
-(async () => {
+const start = async () => {
   try {
     await mongoose.connect(MONGO_URI);
-    app.listen(PORT, () => {
-      console.log(`API ready on http://localhost:${PORT}`);
-    });
+    console.log('MongoDB connected');
+
+    // If running as a normal Node server (locally or on a host), listen on PORT
+    if (!process.env.VERCEL) {
+      app.listen(PORT, () => {
+        console.log(`API ready on http://localhost:${PORT}`);
+      });
+    }
   } catch (err) {
-    console.error("Mongo connection failed:", err.message);
-    process.exit(1);
+    console.error('Mongo connection failed:', err && err.stack ? err.stack : err);
+    // In serverless environment don't exit process — let the platform handle retries
+    if (!process.env.VERCEL) process.exit(1);
   }
-})();
+};
+
+start();
+
+// Export app for serverless platforms (Vercel). We'll optionally wrap with serverless-http in Vercel entry.
+export default app;
 
 
 const Job = mongoose.model("Job", jobSchema);
@@ -149,6 +161,12 @@ app.post("/api/jobs/seed", async (_req, res) => {
   } catch (err) {
     res.status(500).json({ message: "Failed to seed jobs" });
   }
+});
+
+// Generic error handler (ensure errors surface in Vercel logs)
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err && (err.stack || err));
+  res.status(err && err.status ? err.status : 500).json({ message: err && err.message ? err.message : 'Internal Server Error' });
 });
 
 
