@@ -15,7 +15,11 @@ const MONGO_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/jobseek"
 // Connect DB and start server
 const start = async () => {
   try {
-    await mongoose.connect(MONGO_URI);
+    await mongoose.connect(MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      dbName: "jobseek"
+    });
     console.log('MongoDB connected');
 
     // If running as a normal Node server (locally or on a host), listen on PORT
