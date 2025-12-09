@@ -1,5 +1,6 @@
 import React from 'react';
 import { MapPin, Briefcase, Calendar, ExternalLink } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const JobCard = ({ job }) => {
     const formatDeadline = (deadline) => {
@@ -15,6 +16,8 @@ const JobCard = ({ job }) => {
         if (diffDays <= 7) return `${diffDays} days left`;
         return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     };
+
+    const navigate = useNavigate();
 
     const getTypeColor = (type) => {
         switch (type) {
@@ -65,16 +68,14 @@ const JobCard = ({ job }) => {
                     </div>
                 </div>
 
-                <a
-                    href={job.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-200 flex items-center justify-center space-x-2 font-medium"
-                    aria-label={`Apply for ${job.title} at ${job.company}`}
-                >
-                    <span>Apply Now</span>
-                    <ExternalLink className="w-4 h-4" />
-                </a>
+                        <button
+                            onClick={() => navigate(`/apply/${job._id || job.id || ''}`)}
+                            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-200 flex items-center justify-center space-x-2 font-medium"
+                            aria-label={`Apply for ${job.title} at ${job.company}`}
+                        >
+                            <span>Apply Now</span>
+                            <ExternalLink className="w-4 h-4" />
+                        </button>
             </div>
         </div>
     );

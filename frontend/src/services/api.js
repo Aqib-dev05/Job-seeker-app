@@ -17,6 +17,39 @@ export const fetchJobsAndInternships = async (filters = {}) => {
   return response.json();
 };
 
+export const fetchJobById = async (id) => {
+  const url = `${API_BASE}/jobs/${id}`;
+  const response = await fetch(url);
+  if (!response.ok) throw new Error('Failed to fetch job');
+  return response.json();
+};
+
+export const createJob = async (job) => {
+  const response = await fetch(`${API_BASE}/jobs`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(job)
+  });
+  if (!response.ok) throw new Error('Failed to create job');
+  return response.json();
+};
+
+export const updateJob = async (id, job) => {
+  const response = await fetch(`${API_BASE}/jobs/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(job)
+  });
+  if (!response.ok) throw new Error('Failed to update job');
+  return response.json();
+};
+
+export const deleteJob = async (id) => {
+  const response = await fetch(`${API_BASE}/jobs/${id}`, { method: 'DELETE' });
+  if (!response.ok) throw new Error('Failed to delete job');
+  return response.json();
+};
+
 /* location: "San Francisco, CA",
             type: "Internship",
             field: "Technology",
