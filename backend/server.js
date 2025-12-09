@@ -135,15 +135,15 @@ app.post("/api/jobs/seed", async (_req, res) => {
 });
 
 // Connect DB and start server
-mongoose
-  .connect(MONGO_URI)
-  .then(() => {
+(async () => {
+  try {
+    await mongoose.connect(MONGO_URI);
     app.listen(PORT, () => {
       console.log(`API ready on http://localhost:${PORT}`);
     });
-  })
-  .catch((err) => {
+  } catch (err) {
     console.error("Mongo connection failed:", err.message);
     process.exit(1);
-  });
+  }
+})();
 
