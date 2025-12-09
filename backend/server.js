@@ -11,6 +11,18 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/jobseek";
 
+// Connect DB and start server
+(async () => {
+  try {
+    await mongoose.connect(MONGO_URI);
+    app.listen(PORT, () => {
+      console.log(`API ready on http://localhost:${PORT}`);
+    });
+  } catch (err) {
+    console.error("Mongo connection failed:", err.message);
+    process.exit(1);
+  }
+})();
 
 
 const Job = mongoose.model("Job", jobSchema);
@@ -31,6 +43,11 @@ app.use(morgan("dev"));
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", uptime: process.uptime() });
 });
+
+app.get("/",(req,res)=>{
+  res.json({message:"Welcome to JobSeeker API" });
+  
+})
 
 app.get("/api/jobs", async (req, res) => {
   try {
@@ -134,16 +151,5 @@ app.post("/api/jobs/seed", async (_req, res) => {
   }
 });
 
-// Connect DB and start server
-(async () => {
-  try {
-    await mongoose.connect(MONGO_URI);
-    app.listen(PORT, () => {
-      console.log(`API ready on http://localhost:${PORT}`);
-    });
-  } catch (err) {
-    console.error("Mongo connection failed:", err.message);
-    process.exit(1);
-  }
-})();
+
 
